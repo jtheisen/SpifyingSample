@@ -1,0 +1,18 @@
+﻿@model ClassicToSpaSample.Controllers.HomeController.ViewModel
+
+@{
+    ViewBag.Title = "Some Form";
+}
+
+<h2>Some Form</h2>
+
+<form>
+    @if (!String.IsNullOrWhiteSpace(Model.Name))
+    {
+        <p>Hello, @Model.Name!</p>
+    }
+
+    @Html.TextBoxFor(m => m.Name)
+
+    <input type="submit" />
+</form>

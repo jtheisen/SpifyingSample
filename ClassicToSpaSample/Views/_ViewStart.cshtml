@@ -1,0 +1,4 @@
+﻿@{
+    Layout = String.IsNullOrWhiteSpace(Request.Params["is-spa-request"]) ?
+        "~/Views/Shared/_ClassicLayout.cshtml" : "~/Views/Shared/_SpaPageLayout.cshtml";
+}
