@@ -13,6 +13,8 @@ namespace ClassicToSpaSample.Controllers
 
         public ActionResult Page2() => View();
 
+        public ActionResult Page1Alias() => Redirect(Url.Action("Page1"));
+
         public class ViewModel
         {
             public String Name { get; set; }

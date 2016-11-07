@@ -25,9 +25,8 @@ namespace ClassicToSpa {
                 var url = $element.attr('href');
 
                 if (url && url !== '#') {
-                    history.pushState({}, '?', url); // FIXME
                     e.preventDefault();
-                    loadIfRequired();
+                    navigate(url, 'get');
                 }
             });
             $element.data('classic-to-spa-processing-done', true);
@@ -38,28 +37,47 @@ namespace ClassicToSpa {
             if ($form.data('classic-to-spa-processing-done'))
                 return;
 
-            var url = $form.attr('action') || document.location.href;
-
             $("input[type=submit]", $form).each((i2, input) => {
                 var $input = $(input);
                 if ($input.data('classic-to-spa-processing-done'))
                     return;
 
                 input.addEventListener("click", e => {
-                    $.ajax(url, {
-                        success: (html, status) => {
-                        },
-                        error: xhr => {
-                        },
-                        complete: () => { }
-                    });
-
+                    var method = $form.attr('method') || 'get';
+                    var url = $form.attr('action') || document.location.href;
                     e.preventDefault();
-                    loadIfRequired();
+                    navigate(url, method, $form.serialize());
                 });
             });
         });
     }
+
+    var navigate = function (url: string, method: string, data?: string) {
+        var nurl = new URI(url);
+        nurl.addSearch('is-spa-request', 'true');
+        var actualXhr : any = null;
+        $.ajax(nurl.href(), {
+            xhr: function () {
+                actualXhr = jQuery.ajaxSettings.xhr();
+                return actualXhr;
+            },
+            data: data,
+            method: method,
+            success: (html, status) => {
+                var responseURL = actualXhr.responseURL;
+                pageContainer.innerHTML = html;
+                update();
+                var nurl2 = new URI(actualXhr.responseURL);
+                nurl2.removeSearch('is-spa-request');
+                setMessage("subsequent, asynchronous page load: " + url + " (actually " + nurl2.href() + ")");
+                history.pushState({}, '?', nurl2.href()); // FIXME
+            },
+            error: (xhr) => {
+                setHtmlPage(xhr.responseText);
+            },
+            complete: () => { }
+        });
+    };
 
     var loadIfRequired = function () {
         var url = new URI(document.location.href);

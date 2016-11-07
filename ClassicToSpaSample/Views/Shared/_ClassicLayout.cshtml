@@ -27,6 +27,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Page 1", "Page1", "Home")</li>
                     <li>@Html.ActionLink("Page 2", "Page2", "Home")</li>
+                    <li>@Html.ActionLink("Page 1 Alias", "Page1Alias", "Home")</li>
                     <li>@Html.ActionLink("Form", "Form", "Home")</li>
                     <li>@Html.ActionLink("Error", "Error", "Home")</li>
                 </ul>
@@ -36,7 +37,9 @@
 
     <div class="container body-content">
         <div id="loaded-content">
+            <!-- BODY BEGIN eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->
             @RenderBody()
+            <!-- BODY END eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->
         </div>
         <hr />
         <footer>
