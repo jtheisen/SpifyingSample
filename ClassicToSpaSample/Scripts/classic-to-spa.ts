@@ -1,5 +1,4 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
-/// <reference path="typings/urijs/urijs.d.ts" />
 
 // changed anchors and form buttons function (update)
 // the load function (called on initial site loading and on anchor and form button clicks)
@@ -8,13 +7,6 @@ namespace ClassicToSpa {
 
     var pageContainer = document.getElementById('loaded-content');
     var $pageContainer = $(pageContainer);
-
-    /* FIXME
-     * 
-     * - relative uris in anchors and forms
-     * - loading curtain
-     *
-     */
 
     var update = function () {
         $("a").each((i, element) => {
@@ -74,9 +66,8 @@ namespace ClassicToSpa {
         if (!isPopState)
             history.pushState({}, 'loading', url); // FIXME
 
-        var nurl = new URI(url);
         var actualXhr : any = null;
-        $.ajax(nurl.href(), {
+        $.ajax(url, {
             xhr: function () {
                 actualXhr = jQuery.ajaxSettings.xhr();
                 return actualXhr;
