@@ -22,9 +22,16 @@ namespace ClassicToSpaSample.Controllers
             public Int32 Age { get; set; }
         }
 
-        public ActionResult Form(ViewModel vm = null)
+        public ActionResult Form(ViewModel vm = null, String mode = null)
         {
-            return View(vm);
+            if (mode == "redirect")
+            {
+                return Redirect(Url.Action());
+            }
+            else
+            {
+                return View(vm);
+            }
         }
     }
 }

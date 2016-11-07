@@ -30,54 +30,55 @@ var ClassicToSpa;
             var $form = $(form);
             if ($form.data('classic-to-spa-processing-done'))
                 return;
-            $("input[type=submit]", $form).each(function (i2, input) {
-                var $input = $(input);
-                if ($input.data('classic-to-spa-processing-done'))
+            var buttonSelector = "input[type=submit], button[type=submit]";
+            $(buttonSelector, $form).each(function (i2, button) {
+                var $button = $(button);
+                if ($button.data('classic-to-spa-processing-done'))
                     return;
-                input.addEventListener("click", function (e) {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
                     var method = $form.attr('method') || 'get';
                     var url = $form.attr('action') || document.location.href;
-                    e.preventDefault();
-                    navigate(url, method, $form.serialize());
+                    var formDataArray = $form.serializeArray();
+                    var name = $button.attr('name');
+                    var formData = {};
+                    for (var _i = 0, formDataArray_1 = formDataArray; _i < formDataArray_1.length; _i++) {
+                        var obj = formDataArray_1[_i];
+                        formData[obj.name] = obj.value;
+                    }
+                    if (name) {
+                        var value = $button.attr('value');
+                        formData[name] = value;
+                    }
+                    navigate(url, method, $.param(formData));
                 });
+                $button.data('classic-to-spa-processing-done', true);
             });
         });
     };
-    var navigate = function (url, method, data) {
+    var navigate = function (url, method, data, isPopState) {
+        if (!isPopState)
+            history.pushState({}, 'loading', url); // FIXME
         var nurl = new URI(url);
-        nurl.addSearch('is-spa-request', 'true');
         var actualXhr = null;
         $.ajax(nurl.href(), {
             xhr: function () {
                 actualXhr = jQuery.ajaxSettings.xhr();
                 return actualXhr;
             },
+            dataType: 'text',
             data: data,
             method: method,
             success: function (html, status) {
                 var responseURL = actualXhr.responseURL;
-                pageContainer.innerHTML = html;
+                var regex = /<!-- BODY BEGIN eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->([\s\S]*)<!-- BODY END eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->/;
+                var match = html.match(regex);
+                var content = match[1];
+                pageContainer.innerHTML = content;
                 update();
-                var nurl2 = new URI(actualXhr.responseURL);
-                nurl2.removeSearch('is-spa-request');
-                setMessage("subsequent, asynchronous page load: " + url + " (actually " + nurl2.href() + ")");
-                history.pushState({}, '?', nurl2.href()); // FIXME
-            },
-            error: function (xhr) {
-                setHtmlPage(xhr.responseText);
-            },
-            complete: function () { }
-        });
-    };
-    var loadIfRequired = function () {
-        var url = new URI(document.location.href);
-        url.addSearch('is-spa-request', 'true');
-        // FIXME: redirects
-        $.ajax(url.href(), {
-            success: function (html, status) {
-                setMessage("subsequent, asynchronous page load: " + url);
-                pageContainer.innerHTML = html;
-                update();
+                setMessage("subsequent, asynchronous page load: " + url + " (actually " + actualXhr.responseURL + ")");
+                if (!isPopState)
+                    history.replaceState({}, '?', actualXhr.responseURL); // FIXME
             },
             error: function (xhr) {
                 setHtmlPage(xhr.responseText);
@@ -99,7 +100,7 @@ var ClassicToSpa;
     ;
     ClassicToSpa.init = function () {
         onpopstate = function (e) {
-            loadIfRequired();
+            navigate(document.location.href, 'get', null, true);
         };
         update();
         setMessage("initial, direct page load: " + document.location.href);

@@ -14,5 +14,17 @@
 
     @Html.TextBoxFor(m => m.Name)
 
-    <input type="submit" />
+    <input type="submit" value="Submit 1" />
+    <input name="mode" value="Submit 2" type="submit" />
+    <button name="mode" value="redirect" type="submit">Submit 3</button>
+
+    <dl>
+        <dt>Submit 1</dt>
+        <dd>An input without a name tag. The posted form will get a document response.</dd>
+        <dt>Submit 2</dt>
+        <dd>An input with a name tag, but it gets the same response as the first button.</dd>
+        <dt>Submit 3</dt>
+        <dd>An input with a name tag and a value specifying that the server will follow the post with a redirect to this page.
+        Since this sample server compontent doesn't use any kind of session, the form data doesn't appear on the diplayed response.</dd>
+    </dl>
 </form>
