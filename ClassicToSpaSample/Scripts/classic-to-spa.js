@@ -90,8 +90,9 @@ var ClassicToSpaShim;
     };
     function setHtmlPage(html) {
         $pageContainer.empty();
-        var root = $('<iframe frameBorder="0" style="position: absolute; width: 100%; height: 100%;" />')
+        $('<div class="iframe-wrapper"><iframe /></div>')
             .appendTo($pageContainer)
+            .find('iframe')
             .contents()
             .find('html')
             .html(html);

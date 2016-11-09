@@ -25,18 +25,36 @@ textarea {
     background-color: rgba(0, 0, 0, .04);
 }*/
 
+body {
+    display: flex;
+    flex-direction: row;
+}
+
 #load-content {
-    position: absolute;
-    margin-right: 400px;
+    position: relative;
+    flex-grow: 1;
+    order: 0;
 }
 
 #classic-to-spa-request-info-display {
-    float: right;
-    width: 400px;
-    height: 100%;
+    order: 1;
+    flex-basis: 400px;
     background-color: rgba(0, 0, 0, .04);
+    padding: 20px;
+}
+
+#load-content > div.iframe-wrapper {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    right: 40px;
+    bottom: 40px;
+}
+
+#load-content > div.iframe-wrapper > iframe {
+    height:100%;
+    width:100%;
 }
 
 #classic-to-spa-request-info-display > div {
-    margin: 100px 10px 10px 10px;
 }
