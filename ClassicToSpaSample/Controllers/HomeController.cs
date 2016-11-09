@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ClassicToSpaSample.Controllers
@@ -21,11 +20,10 @@ namespace ClassicToSpaSample.Controllers
         [Route("page1redirect")]
         public ActionResult Page1Redirect() => Redirect(Url.Action("Page1"));
 
+
         public class ViewModel
         {
             public String Name { get; set; }
-
-            public Int32 Age { get; set; }
         }
 
         [Route("form")]

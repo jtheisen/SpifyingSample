@@ -1,10 +1,10 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/js-cookie/js-cookie.d.ts" />
 
-namespace ClassicToSpa {
+namespace ClassicToSpaShim {
 
-    var pageContainer = document.getElementById('loaded-content');
-    var $pageContainer = $(pageContainer);
+    var pageContainer: HTMLElement;
+    var $pageContainer: JQuery;
 
     var useClassicMode = function () {
         return !!Cookies.get('use-classic-mode');
@@ -114,7 +114,7 @@ namespace ClassicToSpa {
 
     function setHtmlPage(html : string) {
         $pageContainer.empty();
-        var root = $('<iframe frameBorder="0" width="100%" height="500px" />')
+        var root = $('<iframe frameBorder="0" style="position: absolute; width: 100%; height: 100%;" />')
             .appendTo($pageContainer)
             .contents()
             .find('html')
@@ -126,6 +126,13 @@ namespace ClassicToSpa {
     };
 
     export var init = () => {
+        pageContainer = document.getElementById('load-content');
+
+        if (!pageContainer)
+            console.error('Could not find load-content element.');
+
+        $pageContainer = $(pageContainer);
+
         onpopstate = e => {
             navigate(document.location.href, 'get', null, true);
         };
@@ -134,4 +141,4 @@ namespace ClassicToSpa {
     }
 }
 
-$(ClassicToSpa.init);
+$(ClassicToSpaShim.init);

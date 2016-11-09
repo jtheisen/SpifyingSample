@@ -3,10 +3,6 @@ body {
     height: 100%;
 }
 
-body {
-    padding-top: 50px;
-}
-
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -29,11 +25,15 @@ textarea {
     background-color: rgba(0, 0, 0, .04);
 }*/
 
+#load-content {
+    position: absolute;
+    margin-right: 400px;
+}
+
 #classic-to-spa-request-info-display {
     float: right;
     width: 400px;
     height: 100%;
-    margin-left: 80px;
     background-color: rgba(0, 0, 0, .04);
 }
 

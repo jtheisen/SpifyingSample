@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Spifing Sample Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/URI.min.js"></script>
+    <script src="~/Scripts/js-cookie/js.cookie-2.1.3.min.js"></script>
+    <script src="~/Scripts/classic-to-spa.js"></script>
+</head>
+<body>
+    @{ Html.RenderPartial("_RequestInfoDisplay"); }
+
+    <div id="load-content">
+        <!-- BODY BEGIN eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->
+        @RenderBody()
+        <!-- BODY END eb8b19a0-87bc-4c04-bcef-b12f4d22bb7c -->
+    </div>
+</body>
+</html>

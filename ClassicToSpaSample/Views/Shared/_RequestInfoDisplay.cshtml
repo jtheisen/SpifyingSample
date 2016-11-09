@@ -24,8 +24,8 @@
             var element = document.getElementById(
                 Cookies.get('use-classic-mode') ? 'spified-mode' : 'classic-mode');
             element.remove();
-            $('#spified-mode a').on('click', function () { ClassicToSpa.setClassicMode(true); window.document.location.reload(); });
-            $('#classic-mode a').on('click', function () { ClassicToSpa.setClassicMode(false); window.document.location.reload(); });
+            $('#spified-mode a').on('click', function () { ClassicToSpaShim.setClassicMode(true); window.document.location.reload(); });
+            $('#classic-mode a').on('click', function () { ClassicToSpaShim.setClassicMode(false); window.document.location.reload(); });
         })();
     </script>
 </div>

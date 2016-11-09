@@ -1,13 +1,13 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/js-cookie/js-cookie.d.ts" />
-var ClassicToSpa;
-(function (ClassicToSpa) {
-    var pageContainer = document.getElementById('loaded-content');
-    var $pageContainer = $(pageContainer);
+var ClassicToSpaShim;
+(function (ClassicToSpaShim) {
+    var pageContainer;
+    var $pageContainer;
     var useClassicMode = function () {
         return !!Cookies.get('use-classic-mode');
     };
-    ClassicToSpa.setClassicMode = function (classicModeEnabled) {
+    ClassicToSpaShim.setClassicMode = function (classicModeEnabled) {
         if (classicModeEnabled)
             Cookies.set('use-classic-mode', 'true');
         else
@@ -90,7 +90,7 @@ var ClassicToSpa;
     };
     function setHtmlPage(html) {
         $pageContainer.empty();
-        var root = $('<iframe frameBorder="0" width="100%" height="500px" />')
+        var root = $('<iframe frameBorder="0" style="position: absolute; width: 100%; height: 100%;" />')
             .appendTo($pageContainer)
             .contents()
             .find('html')
@@ -100,13 +100,17 @@ var ClassicToSpa;
         console.info(msg);
     }
     ;
-    ClassicToSpa.init = function () {
+    ClassicToSpaShim.init = function () {
+        pageContainer = document.getElementById('load-content');
+        if (!pageContainer)
+            console.error('Could not find load-content element.');
+        $pageContainer = $(pageContainer);
         onpopstate = function (e) {
             navigate(document.location.href, 'get', null, true);
         };
         update();
         setMessage("initial, direct page load: " + document.location.href);
     };
-})(ClassicToSpa || (ClassicToSpa = {}));
-$(ClassicToSpa.init);
+})(ClassicToSpaShim || (ClassicToSpaShim = {}));
+$(ClassicToSpaShim.init);
 //# sourceMappingURL=classic-to-spa.js.map
