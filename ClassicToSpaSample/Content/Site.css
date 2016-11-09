@@ -1,6 +1,10 @@
-﻿body {
+﻿html,
+body {
+    height: 100%;
+}
+
+body {
     padding-top: 50px;
-    padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -16,8 +20,23 @@ textarea {
     max-width: 280px;
 }
 
-#classic-to-spa-request-info-div {
+/*#classic-to-spa-request-info-display {
     position: fixed;
-    right: 10px;
-    top: 10px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    background-color: rgba(0, 0, 0, .04);
+}*/
+
+#classic-to-spa-request-info-display {
+    float: right;
+    width: 400px;
+    height: 100%;
+    margin-left: 80px;
+    background-color: rgba(0, 0, 0, .04);
+}
+
+#classic-to-spa-request-info-display > div {
+    margin: 100px 10px 10px 10px;
 }

@@ -9,14 +9,19 @@
 <form method="post">
     @if (!String.IsNullOrWhiteSpace(Model.Name))
     {
-        <p>Hello, @Model.Name!</p>
+        <div class="alert alert-info">
+            <p>Hello, @Model.Name!</p>
+        </div>
     }
 
-    @Html.TextBoxFor(m => m.Name)
+    <div class="form-group">
+        <label>Name:</label>
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
 
-    <input type="submit" value="Submit 1" />
-    <input name="mode" value="Submit 2" type="submit" />
-    <button name="mode" value="redirect" type="submit">Submit 3</button>
+    <input type="submit" value="Submit 1" class="btn btn-default" />
+    <input name="mode" value="Submit 2" type="submit" class="btn btn-default" />
+    <button name="mode" value="redirect" type="submit" class="btn btn-default">Submit 3</button>
 
     <dl>
         <dt>Submit 1</dt>

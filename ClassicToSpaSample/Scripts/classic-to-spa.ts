@@ -1,19 +1,30 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
-
-// changed anchors and form buttons function (update)
-// the load function (called on initial site loading and on anchor and form button clicks)
+/// <reference path="typings/js-cookie/js-cookie.d.ts" />
 
 namespace ClassicToSpa {
 
     var pageContainer = document.getElementById('loaded-content');
     var $pageContainer = $(pageContainer);
 
+    var useClassicMode = function () {
+        return !!Cookies.get('use-classic-mode');
+    };
+
+    export var setClassicMode = function (classicModeEnabled: boolean) {
+        if (classicModeEnabled)
+            Cookies.set('use-classic-mode', 'true');
+        else
+            Cookies.remove('use-classic-mode');
+    };
+
     var update = function () {
-        $("a").each((i, element) => {
+        $("a", pageContainer).each((i, element) => {
             var $element = $(element);
             if ($element.data('classic-to-spa-processing-done'))
                 return;
             element.addEventListener("click", e => {
+                if (useClassicMode()) return;
+
                 var url = $element.attr('href');
 
                 if (url && url !== '#') {
@@ -24,7 +35,7 @@ namespace ClassicToSpa {
             $element.data('classic-to-spa-processing-done', true);
         });
 
-        $("form").each((i, form) => {
+        $("form", pageContainer).each((i, form) => {
             var $form = $(form);
             if ($form.data('classic-to-spa-processing-done'))
                 return;
@@ -37,6 +48,8 @@ namespace ClassicToSpa {
                     return;
 
                 button.addEventListener("click", e => {
+                    if (useClassicMode()) return;
+
                     e.preventDefault();
 
                     var method = $form.attr('method') || 'get';
@@ -46,25 +59,26 @@ namespace ClassicToSpa {
 
                     var name = $button.attr('name');
 
-                    var formData: { [name: string]: string; } = {};
-                    for (var obj of formDataArray) formData[obj.name] = obj.value;
-
                     if (name) {
                         var value = $button.attr('value');
 
-                        formData[name] = value;
+                        formDataArray.push({ name: name, value: value });
                     }
 
-                    navigate(url, method, $.param(formData));
+                    navigate(url, method, $.param(formDataArray));
                 });
                 $button.data('classic-to-spa-processing-done', true);
             });
         });
     }
 
-    var navigate = function (url: string, method: string, data?: string, isPopState?: boolean) {
+    var navigate = function (relativeUrl: string, method: string, data?: string, isPopState?: boolean) {
+        var url = new URI(relativeUrl)
+            .absoluteTo(document.location.href)
+            .href();
+
         if (!isPopState)
-            history.pushState({}, 'loading', url); // FIXME
+            history.pushState({}, null, url);
 
         var actualXhr : any = null;
         $.ajax(url, {
@@ -89,7 +103,7 @@ namespace ClassicToSpa {
                 setMessage("subsequent, asynchronous page load: " + url + " (actually " + actualXhr.responseURL + ")");
 
                 if (!isPopState)
-                    history.replaceState({}, '?', actualXhr.responseURL); // FIXME
+                    history.replaceState({}, null, actualXhr.responseURL);
             },
             error: (xhr) => {
                 setHtmlPage(xhr.responseText);

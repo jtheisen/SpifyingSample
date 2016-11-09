@@ -1,0 +1,22 @@
+﻿<div id="classic-to-spa-request-info-display">
+    <div id="spified-mode">
+        <h3>the sample is in spified mode</h3>
+        <p>In the spified mode, this side bar never reloads on inner-site navigation as only a part of the DOM, the <i>load content</i>, is fetched.</p>
+        <p>The sample can be switched between working as a SPA or a classic web application by controlling a cookie. The change is entirely client side: The behavior of the server
+        is independent from the cookie setting.</p>
+        <p><a href="@Url.Action("SetClassicMode", "Config", new { ReturnUrl = Url.Action() })">Click here to switch to classic mode.</a></p>
+    </div>
+
+    <div id="classic-mode">
+        <h3>the sample is in classic mode</h3>
+        <p><a href="@Url.Action("SetSpifiedMode", "Config", new { ReturnUrl = Url.Action() })">Click here to switch to spified mode.</a></p>
+    </div>
+
+    <script>
+        (function () {
+            var element = document.getElementById(
+                Cookies.get('use-classic-mode') ? 'spified-mode' : 'classic-mode');
+            element.remove();
+        })();
+    </script>
+</div>
