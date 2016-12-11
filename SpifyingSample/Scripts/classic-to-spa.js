@@ -1,13 +1,13 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/js-cookie/js-cookie.d.ts" />
-var ClassicToSpaShim;
-(function (ClassicToSpaShim) {
+var SpifyingShim;
+(function (SpifyingShim) {
     var pageContainer;
     var $pageContainer;
     var useClassicMode = function () {
         return !!Cookies.get('use-classic-mode');
     };
-    ClassicToSpaShim.setClassicMode = function (classicModeEnabled) {
+    SpifyingShim.setClassicMode = function (classicModeEnabled) {
         if (classicModeEnabled)
             Cookies.set('use-classic-mode', 'true');
         else
@@ -101,7 +101,7 @@ var ClassicToSpaShim;
         console.info(msg);
     }
     ;
-    ClassicToSpaShim.init = function () {
+    SpifyingShim.init = function () {
         pageContainer = document.getElementById('load-content');
         if (!pageContainer)
             console.error('Could not find load-content element.');
@@ -112,6 +112,6 @@ var ClassicToSpaShim;
         update();
         setMessage("initial, direct page load: " + document.location.href);
     };
-})(ClassicToSpaShim || (ClassicToSpaShim = {}));
-$(ClassicToSpaShim.init);
+})(SpifyingShim || (SpifyingShim = {}));
+$(SpifyingShim.init);
 //# sourceMappingURL=classic-to-spa.js.map

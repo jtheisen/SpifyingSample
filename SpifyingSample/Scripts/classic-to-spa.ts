@@ -1,7 +1,7 @@
 ﻿/// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/js-cookie/js-cookie.d.ts" />
 
-namespace ClassicToSpaShim {
+namespace SpifyingShim {
 
     var pageContainer: HTMLElement;
     var $pageContainer: JQuery;
@@ -142,4 +142,4 @@ namespace ClassicToSpaShim {
     }
 }
 
-$(ClassicToSpaShim.init);
+$(SpifyingShim.init);

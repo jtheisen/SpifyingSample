@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 
-namespace ClassicToSpaSample.Controllers
+namespace SpifyingSample.Controllers
 {
     public class HomeController : Controller
     {
